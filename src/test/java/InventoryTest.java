@@ -14,8 +14,8 @@ public class InventoryTest {
 
         Inventory inventory = new Inventory();
         TreeMap<String, String> expected = new TreeMap<>();
-        expected.put("A1", Product);
-        Assert.assertEquals(;
+        expected.put("A1", null);
+        Assert.assertEquals()
 
 
     }
