@@ -10,6 +10,10 @@ public class Inventory {
     private TreeMap<String, Product> inventory = new TreeMap<>();
     File vendingMachineInventory = new File("vendingmachine.csv");
 
+    public TreeMap<String, Product> getInventory() {
+        return inventory;
+    }
+
     public void loadInventory() {
 
         try (Scanner fileScanner = new Scanner(vendingMachineInventory)) {
@@ -17,7 +21,7 @@ public class Inventory {
             while (fileScanner.hasNextLine()) {
 
                 String line = fileScanner.nextLine();
-                String[] inventoryArr = fileScanner.nextLine().split("|", 4);
+                String[] inventoryArr = line.split("\\|", 4);
                 String location = inventoryArr[0];
                 String productName = inventoryArr[1];
                 Double productPrice = Double.valueOf(inventoryArr[2]);
