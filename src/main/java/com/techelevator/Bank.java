@@ -23,10 +23,11 @@ public class Bank {
         return machineBalance;
     }
 
+    Inventory inventory = new Inventory();
 
     //We want to subtract product price from the machine's balance to get how much money the customer gets back
     public int giveChange() {
-        machineBalance -= 
+        machineBalance -= Inventory.
 
 
 }
