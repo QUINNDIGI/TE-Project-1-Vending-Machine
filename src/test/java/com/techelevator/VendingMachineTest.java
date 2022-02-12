@@ -11,7 +11,7 @@ public class VendingMachineTest {
     public void feedMoney() {
         VendingMachine vendingMachine = new VendingMachine();
         int result = vendingMachine.feedMoney(5);
-        Assert.assertEquals(result, 500);
+        Assert.assertEquals(500, result);
     }
 
     @Test
@@ -20,8 +20,9 @@ public class VendingMachineTest {
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
         vendingMachine.feedMoney(6);
-       int result = vendingMachine.getChange();
+        int result = vendingMachine.getChange();
         Assert.assertEquals(600, result);
+
         vendingMachine.feedMoney(6);
         Product product = vendingMachine.selectProduct("A1");
         result = vendingMachine.getChange();
@@ -33,8 +34,9 @@ public class VendingMachineTest {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
-
+        vendingMachine.feedMoney(6);
         Assert.assertEquals(16, inventory.getInventory().size());
+
         Product product = vendingMachine.selectProduct("A1");
         Assert.assertEquals("Potato Crisps", product.getName());
     }
@@ -51,6 +53,7 @@ public class VendingMachineTest {
             fail("Expected select product exception");
         } catch (SelectProductException e) {
             // expected
+            System.out.println(e.getMessage());
         }
 
     }

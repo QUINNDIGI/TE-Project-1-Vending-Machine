@@ -1,11 +1,17 @@
 package com.techelevator;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeMap;
 
 public class VendingMachine {
+    List<String> list = new ArrayList<String>();
 
    private int customerBalance = 0;
    private int machineBalance = 0;
@@ -48,7 +54,26 @@ public class VendingMachine {
        return product;
     }
 
+    public List<String> getList(){
+        return this.list;
+    }
 
+    public void logFile() throws IOException {
+        File purchaseRecord = new File("src/test/resources/Log.txt");
+        List<String> list = getList();
+        try(FileWriter logWriter = new FileWriter(purchaseRecord, true)){
+            for(String string : list) {
+                logWriter.write(string);
+                logWriter.write("\n");
+            }
+        }
+
+//        public List<String> log(
+    }
+
+//    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+//    Date date = new Date(System.currentTimeMillis());
+//    System.out.println(formatter.format(date));
 
 
 
