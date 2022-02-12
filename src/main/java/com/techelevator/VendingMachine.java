@@ -28,24 +28,36 @@ public class VendingMachine {
         return moneyToReturn;
     }
 
-    public Product selectProduct(String location) {
+    public Product selectProduct(String location) throws SelectProductException {
+        if (!inventory.getInventory().containsKey(location)) {
+            // key does not exist
+            throw new SelectProductException(" Does not exist");
+        }
         TreeMap<String, Product> map = inventory.getInventory();
-       Product product = map.get(location);
-// check to see if location is valid (if product is null not in map)
- // check to see if sold out (product.getcount < 1 )
- // check to see if enough $$(customer balance is >= item.getprice)
- // deduct cost of product from customer balance
- // reduce the product.count by 1 (maybe setter or another method on product class to reduce count (--count)
-
-
-
-
+        Product product = map.get(location);
+        if(product.getInventory() == 0) {
+            //sold out
+            throw new SelectProductException("Product sold out");
+        }
+        if (customerBalance < product.getPrice()) {
+            // not enough money
+            throw new SelectProductException("You do not have enough money");
+        }
+        customerBalance -= product.getPrice();
+        product.reduceInventory();
        return product;
-
-
     }
 
 
+
+
+
+
+// check to see if location is valid (if product is null not in map)
+    // check to see if sold out (product.getcount < 1 )
+    // check to see if enough $$(customer balance is >= item.getprice)
+    // deduct cost of product from customer balance
+    // reduce the product.count by 1 (maybe setter or another method on product class to reduce count (--count)
 
 
 
