@@ -51,6 +51,5 @@ public class Inventory {
     }
 
 
-    public Inventory() throws FileNotFoundException {
-    }
+
 }
