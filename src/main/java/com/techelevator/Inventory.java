@@ -2,15 +2,16 @@ package com.techelevator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 public class Inventory {
 
-    private TreeMap<String, Product> inventory = new TreeMap<>();
+    private Map<String, Product> inventory = new TreeMap<>();
     File vendingMachineInventory = new File("vendingmachine.csv");
 
-    public TreeMap<String, Product> getInventory() {
+    public Map<String, Product> getInventory() {
         return inventory;
     }
 

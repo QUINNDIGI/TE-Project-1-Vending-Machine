@@ -8,14 +8,14 @@ import static org.junit.Assert.*;
 public class VendingMachineTest {
 
     @Test
-    public void feedMoney() {
+    public void feedMoney() throws Exception {
         VendingMachine vendingMachine = new VendingMachine();
         int result = vendingMachine.feedMoney(5);
         Assert.assertEquals(500, result);
     }
 
     @Test
-    public void getChange() throws SelectProductException {
+    public void getChange() throws Exception {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
@@ -30,7 +30,7 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void selectProduct() throws SelectProductException {
+    public void selectProduct() throws Exception {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
@@ -41,7 +41,7 @@ public class VendingMachineTest {
         Assert.assertEquals("Potato Crisps", product.getName());
     }
     @Test
-    public void selectProduct_invalidKey()  {
+    public void selectProduct_invalidKey() throws Exception  {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
@@ -58,7 +58,7 @@ public class VendingMachineTest {
 
     }
     @Test
-    public void selectProduct_SoldOut()  {
+    public void selectProduct_SoldOut() throws Exception  {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
@@ -83,7 +83,7 @@ public class VendingMachineTest {
 
     }
     @Test
-    public void selectProduct_NoMoney()  {
+    public void selectProduct_NoMoney() throws Exception  {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();

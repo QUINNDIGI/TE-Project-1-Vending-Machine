@@ -14,40 +14,59 @@ public class VendingMachine {
    private int machineBalance = 0;
    private Inventory inventory = new Inventory();
 
+
+
     public Inventory getInventory() {
         return inventory;
     }
 
-    public int feedMoney (int dollars) {
-// TODO: write tests
+    public int feedMoney (int dollars) throws FileNotFoundException {
+
         customerBalance += dollars * 100;
+        String logMessage = String.format("FEED MONEY: $%.2f $%.2f", (double) dollars, customerBalance/100.0);
+        logTransaction(logMessage);
         return customerBalance;
 
+
     }
-    public int getChange() {
-        // TODO: write tests
+
+    public int getCustomerBalance() {
+        return customerBalance;
+    }
+
+    public int getChange() throws FileNotFoundException {
+
         int moneyToReturn = customerBalance;
         customerBalance = 0;
+        String logMessage = String.format("GIVE CHANGE: $%.2f $%.2f",  moneyToReturn/100.0, customerBalance/100.0);
+        logTransaction(logMessage);
         return moneyToReturn;
     }
 
-    public Product selectProduct(String location) throws SelectProductException {
+    public Product selectProduct(String location) throws SelectProductException, FileNotFoundException {
         if (!inventory.getInventory().containsKey(location)) {
             // key does not exist
             throw new SelectProductException(" Does not exist");
         }
-        TreeMap<String, Product> map = inventory.getInventory();
+        Map<String, Product> map = inventory.getInventory();
         Product product = map.get(location);
         if(product.getInventory() == 0) {
             //sold out
             throw new SelectProductException("Product sold out");
         }
+
+        //TODO: "Trying to Buy MoonPie, need more money"
         if (customerBalance < product.getPrice()) {
             // not enough money
             throw new SelectProductException("You do not have enough money");
         }
+        double previousBalance = customerBalance / 100.0;
         customerBalance -= product.getPrice();
         product.reduceInventory();
+
+        String logMessage = String.format("%s %s %.2f %.2f", product.getName(), location, previousBalance, customerBalance / 100.0);
+        logTransaction(logMessage);
+
        return product;
     }
 
@@ -55,28 +74,22 @@ public class VendingMachine {
         return this.list;
     }
 
-    public void logTransaction() throws IOException {
+
+    //The start of our problems
+    public void logTransaction(String message) throws FileNotFoundException {
         File purchaseRecord = new File("src/test/resources/Log.txt");
 
-        try(PrintWriter logWriter = new PrintWriter(purchaseRecord){
+        try(PrintWriter logWriter = new PrintWriter(new FileOutputStream(purchaseRecord, true))){
 
             LocalDateTime dateTime = LocalDateTime.now(); //Gets the current date and time
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss a");
-            //dd = day of month, MM = month of year, yyyy = year of era, HH = hour of day, mm = minute of hour, ss = second of minute, a = am or pm of day
+            String logString = dateTime.format(formatter) + " " + message + System.lineSeparator();
 
+            logWriter.append(logString);
 
-            //TODO: Need to find a way to show if we use the method feedMoney to return "FEED MONEY"
-            //TODO: Need to find a way to get the product name and the location!
-            //TODO: Need to find a way to get the starting balance and ending balance
-            //TODO: Need to find a war to show if we use the method getChange to return "GIVE CHANGE"
-
-
-            String actionProductFormat = String.format("%s, %d ", inventory.getInventory(productName), location);
-            // -> String logPrint = dateTime + " " + {Action} + " " + {Starting Balance} + " " + {Ending Balance}
-            // -> println(logPrint);
-            // (product name, location)
         }
-        }
+
+      }
 }
 //                 Example Given:
 //                    >01/01/2016 12:00:15 PM FEED MONEY: $5.00 $10.00
@@ -84,7 +97,6 @@ public class VendingMachine {
 //                    >01/01/2016 12:01:25 PM Cowtales B2 $8.50 $7.50
 //                    >01/01/2016 12:01:35 PM GIVE CHANGE: $7.50 $0.00
 
-        //TODO (Date -> Time -> Action -> Balance At Start -> Balance at End)
             //Example:  01/01/2016 12:00:00 PM FEED MONEY: $5.00 $5.00
 
             //Action is feedMoney {customerBalance}, selectProduct {product}, or
@@ -134,4 +146,4 @@ public class VendingMachine {
 
 
 
-}
+
