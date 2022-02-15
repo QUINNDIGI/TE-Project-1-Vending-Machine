@@ -11,7 +11,7 @@ public class VendingMachineCLI {
 
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
 	private static final String MAIN_MENU_OPTION_PURCHASE = "Purchase";
-	private static final String MAIN_MENU_OPTION_EXIT = "Exit To Main Menu";
+	private static final String MAIN_MENU_OPTION_EXIT = "Exit";
 	private static final String[] MAIN_MENU_OPTIONS = { MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT};
 
 	private static final String PURCHASE_MENU_FEED_MONEY = "Feed Money";
@@ -48,16 +48,17 @@ public class VendingMachineCLI {
 				activeMenu = PURCHASE_MENU_OPTIONS;
 				// do purchase
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+				System.out.println("Have A Vendo-Matic Day!");
 				run = false;
 			} else if (choice.equals(PURCHASE_MENU_FEED_MONEY)) {
-				System.out.print("Enter Money In Whole Dollar Amounts: ");
+				System.out.print("Enter Money In Whole Dollar Amounts [$1, $2, $5, or $10 ONLY]: ");
 				String money = in.nextLine();
 				try {
 					vm.feedMoney(Integer.parseInt(money));
-					System.out.println("Your Current Balance Is: " + vm.getCustomerBalance() / 100.0);
+					System.out.println("Your Current Balance Is: $" + vm.getCustomerBalance() / 100.0);
 
-				} catch (FileNotFoundException e) {
-					System.out.println("Failed To Feed Money" + e.getMessage());
+				} catch (FileNotFoundException | SelectProductException e) {
+					System.out.println("Failed To Feed Money: " + e.getMessage());
 				}
 			} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 				displayItems(inventory);
@@ -65,17 +66,17 @@ public class VendingMachineCLI {
 				String slotIdentifier = in.nextLine();
 				try {
 					Product product = vm.selectProduct(slotIdentifier);
-					System.out.println("Thank You For Your Purchase Of " + product.getName() + " " + product.getSound());
-					System.out.println("Your Current Balance Is: " + vm.getCustomerBalance() / 100.0);
+					System.out.println("Thank You For Your Purchase Of " + product.getName() + "! " + product.getSound());
+					System.out.println("Your Current Balance Is: $" + vm.getCustomerBalance() / 100.0);
 				} catch (Exception e) {
-					System.out.println("Failed To Select Product" + e.getMessage());
+					System.out.println("Failed To Select Product: " + e.getMessage());
 				}
 
 
 			} else if (choice.equals(PURCHASE_MENU_OPTION_END_TRANSACTION)) {
 				try {
 					int change = vm.getChange();
-					System.out.println("Your Change Is: " + change / 100.0);
+					System.out.println("Your Change Is: $" + change / 100.0);
 				} catch (FileNotFoundException e) {
 					System.out.println("Failed To Get Change" + e.getMessage());
 				}

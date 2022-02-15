@@ -20,13 +20,20 @@ public class VendingMachine {
         return inventory;
     }
 
-    public int feedMoney (int dollars) throws FileNotFoundException {
+    public int feedMoney (int dollars) throws FileNotFoundException, SelectProductException {
 
         customerBalance += dollars * 100;
-        String logMessage = String.format("FEED MONEY: $%.2f $%.2f", (double) dollars, customerBalance/100.0);
-        logTransaction(logMessage);
-        return customerBalance;
+        if ((dollars != 1) && (dollars != 2) && (dollars != 5) && (dollars != 10)) {
+            customerBalance -= dollars * 100;
+            throw new SelectProductException("Please Enter [$1, $2, $5, $10 ONLY]");
 
+
+
+        } else {
+            String logMessage = String.format("FEED MONEY: $%.2f $%.2f", (double) dollars, customerBalance / 100.0);
+            logTransaction(logMessage);
+            return customerBalance;
+        }
 
     }
 
@@ -56,6 +63,7 @@ public class VendingMachine {
         }
 
         //TODO: "Trying to Buy MoonPie, need more money"
+
         if (customerBalance < product.getPrice()) {
             // not enough money
             throw new SelectProductException("You do not have enough money");

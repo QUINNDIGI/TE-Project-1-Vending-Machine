@@ -19,14 +19,14 @@ public class VendingMachineTest {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
-        vendingMachine.feedMoney(6);
+        vendingMachine.feedMoney(10);
         int result = vendingMachine.getChange();
-        Assert.assertEquals(600, result);
+        Assert.assertEquals(1000, result);
 
-        vendingMachine.feedMoney(6);
+        vendingMachine.feedMoney(10);
         Product product = vendingMachine.selectProduct("A1");
         result = vendingMachine.getChange();
-        Assert.assertEquals(600 - product.getPrice(),result);
+        Assert.assertEquals(1000 - product.getPrice(),result);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class VendingMachineTest {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
-        vendingMachine.feedMoney(6);
+        vendingMachine.feedMoney(10);
         Assert.assertEquals(16, inventory.getInventory().size());
 
         Product product = vendingMachine.selectProduct("A1");
@@ -62,7 +62,7 @@ public class VendingMachineTest {
         VendingMachine vendingMachine = new VendingMachine();
         Inventory inventory = vendingMachine.getInventory();
         inventory.loadInventory();
-        vendingMachine.feedMoney(40);
+        vendingMachine.feedMoney(10);
 
         Assert.assertEquals(16, inventory.getInventory().size());
         try {
